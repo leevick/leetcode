@@ -11,7 +11,7 @@ class Solution {
     if (b.length() != a.length() + 1) return false;
     int i = 0, j = 0;
     for (i = 0, j = 0; i < a.length(); i++, j++) {
-      if (b.at(i) == a.at(i)) {
+      if (b.at(j) == a.at(i)) {
         continue;
       } else {
         j++;
@@ -30,44 +30,26 @@ class Solution {
 
   int longestStrChain(vector<string>& words) {
     const int N = words.size();
-    auto dp = vector<vector<int>>(N, vector<int>(N, 0));
-    auto link = vector<int>(N - 1, -1);
+    auto dp = vector<vector<pair<int, int>>>(
+        N, vector<pair<int, int>>(N, make_pair(0, 0)));
 
     int longest = 0;
     for (int i = 0; i < N - 1; i++) {
-      dp[i][i] = 1;
+      dp[i][i].first = 1;
+      dp[i][i].second = i;
+
       for (int j = i + 1; j < N; j++) {
-        if (dp[i][j - 1] == -1) {
-          break;
-        } else {
-          if (dp[i][j - 1] + N - j <= longest) {
-            break;
-          } else {
-            if (link[j] == 1) {
-              dp[i][j] = dp[i][j - 1] + 1;
-              if (dp[i][j] > longest) {
-                longest = dp[i][j];
-              }
-              continue;
-            } else if (link[j] == 0) {
-              dp[i][j] = -1;
-              break;
-            } else {
-              auto r = isLinked(words[j - 1], words[j]);
-              if (r) {
-                link[j] = 1;
-                dp[i][j] = dp[i][j - 1] + 1;
-                if (dp[i][j] > longest) {
-                  longest = dp[i][j];
-                  cout << "(" << i << "," << j << ") = " << longest << endl;
-                }
-              } else {
-                link[j] = 0;
-                dp[i][j] = -1;
-                break;
-              }
-            }
+        auto r = isLinked(words[dp[i][j - 1].second], words[j]);
+        if (r) {
+          dp[i][j].first = dp[i][j - 1].first + 1;
+          dp[i][j].second = j;
+          if (dp[i][j].first > longest) {
+            longest = dp[i][j].first;
+            cout << "(" << i << "," << j << ") = " << longest << endl;
           }
+        } else {
+          dp[i][j].first = dp[i][j - 1].first;
+          dp[i][j].second = dp[i][j - 1].second;
         }
       }
     }
