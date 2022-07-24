@@ -30,37 +30,36 @@ class Solution {
     }
   }
 
-  void dfs(int index, set<int>& not_visited, vector<vector<char>>& link,
+  void dfs(int index, vector<bool>& visited, vector<vector<char>>& link,
            vector<string>& words, int depth, int& large) {
     // visited[index] = true;
 
-    not_visited.erase(index);
+    int d = depth + 1;
+    if (d > large) {
+      large = d;
+    }
 
-    while (!not_visited.empty()) {
-      if (link[index][*not_visited.begin()] == 0) {
-        not_visited.erase(not_visited.begin());
+    visited[index] = true;
+
+    for (auto i = 0; i < visited.size(); i++) {
+      if (link[index][i] == 0) {
+        visited[i] = true;
         continue;
       }
 
-      if (link[index][*not_visited.begin()] == 1) {
-        if (depth + 1 > large) {
-          large = depth + 1;
-        }
-        dfs(*not_visited.begin(), not_visited, link, words, depth + 1, large);
+      if (link[index][i] == 1) {
+        dfs(i, visited, link, words, d, large);
         continue;
       }
 
-      if (link[index][*not_visited.begin()] == -1) {
-        if (isLinked(words[index], words[*not_visited.begin()])) {
-          link[index][*not_visited.begin()] = 1;
-          if (depth + 1 > large) {
-            large = depth + 1;
-          }
-          dfs(*not_visited.begin(), not_visited, link, words, depth + 1, large);
+      if (link[index][i] == -1) {
+        if (isLinked(words[index], words[i])) {
+          link[index][i] = 1;
+          dfs(i, visited, link, words, d, large);
           continue;
         } else {
-          link[index][*not_visited.begin()] = 0;
-          not_visited.erase(not_visited.begin());
+          link[index][i] = 0;
+          visited[i] = true;
           continue;
         }
       }
@@ -73,9 +72,8 @@ class Solution {
     int large = 0;
 
     for (int i = 0; i < N; i++) {
-      auto not_visited = set<int>();
-      for (int j = 0; j < N; j++) not_visited.insert(j);
-      dfs(i, not_visited, link, words, 1, large);
+      auto visited = vector<bool>(N, false);
+      dfs(i, visited, link, words, 0, large);
     }
     return large;
   }
