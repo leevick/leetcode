@@ -12,31 +12,52 @@ public:
 
         const unsigned short N = s.size();
 
-        short *dp = new short[N * N * 26]{0};
+        // short *dp = new short[N * N * 26]{0};
 
         int span = 0;
 
         for (auto i = 0; i < N; i++) {
+            int hash[26] = {0};
+            int mxi = -1;
+            int mni = -1;
+            int mxv = 0;
+            int mnv = N + 1;
+
             for (auto j = i; j < N; j++) {
-                if (j == i) {
-                    dp[i * N * 26 + j * 26 + s[j] - 'a'] = 1;
-                } else {
-                    for (auto k = 0; k < 26; k++) {
-                        dp[i * N * 26 + j * 26 + k] = dp[i * N * 26 + (j - 1) * 26 + k] + (s[j] - 'a' == k ? 1 : 0);
-                    }
+                const int idx = s[j] - 'a';
+                hash[idx] += 1;
+
+                if (hash[idx] <= mnv) {
+                    mnv = hash[idx];
+                    mni = idx;
+                } else if (idx == mni) {
+                    mnv = hash[idx];
                 }
 
-                int mn = N;
-                int mx = 0;
-                for (int k = 0; k < 26; k++) {
-                    const int v = dp[i * N * 26 + j * 26 + k];
-                    if (v > 0 && v < mn) {
-                        mn = v;
-                    }
-                    mx = max(mx, v);
+                if (hash[idx] >= mxv) {
+                    mxv = hash[idx];
+                    mxi = idx;
+                } else if (idx == mxi) {
+                    mxv = hash[idx];
                 }
 
-                span = max(span, mx - mn);
+                // int sp = mxv - mnv;
+                if (mxi >= 0 && mni >= 0) {
+                    span = max(span, mxv - mnv);
+                    cout << "sp = " << mxv - mnv << endl;
+                }
+
+                // int mn = N;
+                // int mx = 0;
+                // for (int k = 0; k < 26; k++) {
+                //     const int v = dp[i * N * 26 + j * 26 + k];
+                //     if (v > 0 && v < mn) {
+                //         mn = v;
+                //     }
+                //     mx = max(mx, v);
+                // }
+
+                // span = max(span, mx - mn);
                 // cout << "mx = " << mx << "mn = " << mn << " span = " << span << endl;
             }
         }
@@ -47,7 +68,7 @@ public:
 
 int main(int argc, char const *argv[]) {
     auto sol = new Solution();
-    cout << sol->largestVariance("aababbb") << endl;
+    cout << sol->largestVariance("paa") << endl;
     // delete sol;
     return 0;
 }
