@@ -27,14 +27,14 @@ public:
                 const int idx = s[j] - 'a';
                 hash[idx] += 1;
 
-                if (hash[idx] <= mnv) {
+                if (hash[idx] < mnv) {
                     mnv = hash[idx];
                     mni = idx;
                 } else if (idx == mni) {
                     mnv = hash[idx];
                 }
 
-                if (hash[idx] >= mxv) {
+                if (hash[idx] > mxv) {
                     mxv = hash[idx];
                     mxi = idx;
                 } else if (idx == mxi) {
@@ -44,8 +44,11 @@ public:
                 // int sp = mxv - mnv;
                 if (mxi >= 0 && mni >= 0) {
                     span = max(span, mxv - mnv);
-                    cout << "sp = " << mxv - mnv << endl;
+                    // cout << "sp = " << mxv - mnv << endl;
                 }
+
+                // cout << i << "," << j << ","
+                //      << idx << "," << hash[idx] << "," << mni << "," << mxi << "," << mnv << "," << mxv << endl;
 
                 // int mn = N;
                 // int mx = 0;
