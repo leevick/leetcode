@@ -1,40 +1,42 @@
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
 class Solution
 {
 public:
-    int totalStrength(vector<int> &strength) {
-        const int N = strength.size();
-        vector<vector<int>> dpMin(N, vector<int>(N, 1000000007));
-        vector<vector<int>> dpSum(N, vector<int>(N, 0));
+    int totalStrength(vector<int> &A) {
+        long long sum = 0, n = A.size(), ac = 0, mod = 1'000'000'007;
+        vector<long long> stack = {}, acc(n + 2, 0);
+        for (int r = 0; r <= n; ++r) {
+            int a = r < n ? A[r] : 0;
+            ac = (ac + a) % mod;
+            acc[r + 1] = acc[r] + ac;
+            // printf("[%d]a = %d ac = %d acc[%d] = %d\n", r, a, ac, r + 1, acc[r + 1]);
+            while (!stack.empty() && A[stack.back()] > a) {
+                int i = stack.back();
+                stack.pop_back();
+                int l = stack.empty() ? -1 : stack.back();
 
-        int sum = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = i; j < N; j++) {
-                const int sij = strength[j];
-                if (j == i) {
-                    dpSum[i][j] = sij;
-                    dpMin[i][j] = sij;
-                    sum = (sum + sij * sij) % 1000000007;
-                    // printf("%d,%d sum = %d min = %d total = %d\n",i,j,sij,sij,sum);
-                    continue;
-                }
+                long long lacc = l < 0 ? acc[i] : acc[i] - acc[l];
+                long long racc = acc[r] - acc[i];
+                int ln = i - l, rn = r - i;
+                sum = (sum + (racc * ln - lacc * rn) % mod * A[i] % mod) % mod;
+                // printf("[%d][%d][%d] lacc = %d racc = %d sum = %d\n", l, i, r, lacc, racc, sum);
 
-                if (sij < dpMin[i][j - 1]) {
-                    dpMin[i][j] = sij;
-                } else {
-                    dpMin[i][j] = dpMin[i][j - 1];
-                }
-
-                dpSum[i][j] = dpSum[i][j - 1] + sij;
-
-                sum = (sum + dpSum[i][j] * dpMin[i][j]) % 1000000007;
-                // printf("%d,%d sum = %d min = %d total = %d\n",i,j,dpSum[i][j],dpMin[i][j],sum);
+                // printf("([%d]->%d,[%d]) ", i, A[i], l);
             }
+            // printf("\n");
+            stack.push_back(r);
         }
-
-        return sum;
+        return (sum + mod) % mod;
     }
 };
+
+int main(int argc, char const *argv[]) {
+    Solution s;
+    vector<int> v = {1, 3, 1, 2};
+    cout << s.totalStrength(v) << endl;
+    return 0;
+}
