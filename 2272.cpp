@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 class Solution
@@ -18,34 +19,54 @@ public:
 
         for (auto i = 0; i < N; i++) {
             int hash[26] = {0};
-            int mxi = -1;
-            int mni = -1;
-            int mxv = 0;
-            int mnv = N + 1;
+            // int mxi = 0;
+            // int mni = 0;
+            // int mxv = 0;
+            // int mnv = N + 1;
 
             for (auto j = i; j < N; j++) {
                 const int idx = s[j] - 'a';
                 hash[idx] += 1;
 
+                int mxv = 0;
+                int mnv = N + 1;
+                for (auto k = 0; k < 26; k++) {
+                    if (hash[k] == 0)
+                        continue;
+
+                    if (hash[k] > mxv)
+                        mxv = hash[k];
+
+                    if (hash[k] < mnv)
+                        mnv = hash[k];
+                }
+
+                span = max(span, mxv - mnv);
+
+                /*
+
                 if (hash[idx] < mnv) {
+                    mni = 1;
                     mnv = hash[idx];
-                    mni = idx;
-                } else if (idx == mni) {
-                    mnv = hash[idx];
+                } else if (hash[idx] == mnv) {
+                    mni++;
                 }
 
                 if (hash[idx] > mxv) {
+                    mxi = 1;
                     mxv = hash[idx];
-                    mxi = idx;
-                } else if (idx == mxi) {
-                    mxv = hash[idx];
+                } else if (hash[idx] == mnv) {
+                    mxi++;
                 }
 
                 // int sp = mxv - mnv;
-                if (mxi >= 0 && mni >= 0) {
-                    span = max(span, mxv - mnv);
+                if (mxi > 0 && mni > 0) {
+                    const int sp = mxi == 1 && mni == 1 ? 0 : mxv - mnv;
+                    span = max(span, sp);
                     // cout << "sp = " << mxv - mnv << endl;
                 }
+
+                // printf("[%d] max:%d->%d min:%d->%d\n", j, mxi, mxv, mni, mnv);
 
                 // cout << i << "," << j << ","
                 //      << idx << "," << hash[idx] << "," << mni << "," << mxi << "," << mnv << "," << mxv << endl;
@@ -62,6 +83,7 @@ public:
 
                 // span = max(span, mx - mn);
                 // cout << "mx = " << mx << "mn = " << mn << " span = " << span << endl;
+                */
             }
         }
 
@@ -71,7 +93,7 @@ public:
 
 int main(int argc, char const *argv[]) {
     auto sol = new Solution();
-    cout << sol->largestVariance("paa") << endl;
-    // delete sol;
+    cout << sol->largestVariance(argv[1]) << endl;
+    delete sol;
     return 0;
 }
