@@ -30,27 +30,33 @@ public:
                 continue;
             }
 
-            cout << "top = " << top->val << endl;
+            auto left = top->left;
+            auto right = top->right;
 
-            if (top->left != nullptr) {
-                stack.push(top->left);
+            if (left != nullptr) {
+                stack.push(left);
                 continue;
             }
 
             res.push_back(top->val);
+            stack.top() = nullptr;
 
-            if (top->right != nullptr) {
-                stack.push(top->right);
+            if (right != nullptr) {
+                stack.push(right);
                 continue;
             }
 
             stack.pop();
             if (!stack.empty()) {
-                if (stack.top()->left == top) {
-                    stack.top()->left = nullptr;
-                }
-                if (stack.top()->right == top) {
-                    stack.top()->right = nullptr;
+                if (stack.top() == nullptr) {
+                    continue;
+                } else {
+                    if (stack.top()->left == top) {
+                        stack.top()->left = nullptr;
+                    }
+                    if (stack.top()->right == top) {
+                        stack.top()->right = nullptr;
+                    }
                 }
             }
         }
