@@ -34,31 +34,25 @@ public:
             auto right = top->right;
 
             if (left != nullptr) {
-                stack.push(left);
-                continue;
+                if (left->val > -101) {
+                    stack.push(left);
+                    continue;
+                }
             }
 
-            res.push_back(top->val);
-            stack.top() = nullptr;
+            if (top->val > -101) {
+                res.push_back(top->val);
+                top->val = -101;
+            }
 
             if (right != nullptr) {
-                stack.push(right);
-                continue;
+                if (right->val > -101) {
+                    stack.push(right);
+                    continue;
+                }
             }
 
             stack.pop();
-            if (!stack.empty()) {
-                if (stack.top() == nullptr) {
-                    continue;
-                } else {
-                    if (stack.top()->left == top) {
-                        stack.top()->left = nullptr;
-                    }
-                    if (stack.top()->right == top) {
-                        stack.top()->right = nullptr;
-                    }
-                }
-            }
         }
 
         return res;
@@ -66,7 +60,7 @@ public:
 };
 
 int main(int argc, char const *argv[]) {
-    auto root = new TreeNode(1, nullptr, new TreeNode(2, new TreeNode(3), nullptr));
+    auto root = new TreeNode(3, new TreeNode(1, nullptr, new TreeNode(2)), nullptr);
     Solution s;
     auto ret = s.inorderTraversal(root);
 
