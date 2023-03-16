@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -25,6 +26,10 @@ public:
             }
 
             for (int i = 0; i < n; ++i) {
+
+                if (num[i] > q[k])
+                    break;
+
                 for (int j = i; j <= n; ++j) {
                     if (prefix[j] - prefix[i] > q[k])
                         break;
@@ -41,6 +46,7 @@ public:
 };
 
 int main(int argc, char const *argv[]) {
+
     Solution s;
     vector<int> nums = {736411, 184882, 914641, 37925, 214915}, queries = {718089, 665450};
 
