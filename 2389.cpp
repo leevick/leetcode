@@ -31,6 +31,8 @@ public:
                     break;
 
                 for (int j = i; j <= n; ++j) {
+                    if (j > 0 && num[j - 1] > q[k])
+                        break;
                     if (prefix[j] - prefix[i] > q[k])
                         break;
 
