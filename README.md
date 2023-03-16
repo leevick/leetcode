@@ -17,9 +17,12 @@
 # C++ Weapons
 
 
-## upper_bound
 
-return the first element that is less than the provided value.
+| Function                            | Method           |       |
+| :---------------------------------- | :--------------- | :---: |
+| Reverse a vector                    | std::reverse     |       |
+| First element less than provided    | std::upper_bound |       |
+| First element greater than provided | std::lower_bound |       |
+| Find string/characterin string      | std::string.find |       |
+|                                     |                  |       |
 
-
-## sort

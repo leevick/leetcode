@@ -30,7 +30,6 @@ public:
         };
         map<tuple<string, string, string>, info> hash;
         iota(idx.begin(), idx.end(), 0);
-
         // Sort Time O(log(n))
         stable_sort(idx.begin(), idx.end(), [&time](int a, int b) { return time[a] < time[b]; });
         /*
