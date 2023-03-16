@@ -12,3 +12,14 @@
 ## Prefix Sum
 
 
+
+
+# C++ Weapons
+
+
+## upper_bound
+
+return the first element that is less than the provided value.
+
+
+## sort
