@@ -60,3 +60,40 @@ Simple prefix XOR;
 - 2D prefix sum & subarray sum to target problem
 - Time complexity $O(M^2N)$
 
+## 1788. Maximize the Beauty of the Garden
+
+- Negative flowers affect the total beauty
+- Iterate over valid pairs
+
+## 2083. Substrings That Begin and End With the Same Letter
+
+
+### Intuition
+
+- Similar to [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+
+
+### Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$
+
+### Code
+
+```c++
+class Solution {
+public:
+    long long numberOfSubstrings(string s) {
+        int n = s.size();
+        long long ret = 0;
+        long long hash[26] = {0};
+        
+        for(int i = 0;i < n;++i){
+            ret += hash[s[i] - 'a'];
+            hash[s[i] - 'a']++;
+        }
+
+        return ret + n;
+    }
+};
+```
