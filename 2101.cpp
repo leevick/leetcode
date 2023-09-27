@@ -11,26 +11,26 @@ public:
     int maximumDetonation(vector<vector<int>> &bombs) {
         const int n = bombs.size();
         auto mdet = vector<int>(n, 1);
-        auto adj = vector<vector<int>>(n, vector<int>(n, 0));
+        auto adj = vector<vector<bool>>(n, vector<bool>(n, false));
 
         // calculate adjacency
         for (auto i = 0; i < n - 1; ++i) {
-            auto x1 = bombs[i][0];
-            auto y1 = bombs[i][1];
-            auto r1 = bombs[i][2];
+            long long x1 = bombs[i][0];
+            long long y1 = bombs[i][1];
+            long long r1 = bombs[i][2];
 
             for (auto j = i + 1; j < n; ++j) {
-                auto x2 = bombs[j][0];
-                auto y2 = bombs[j][1];
-                auto r2 = bombs[j][2];
+                long long x2 = bombs[j][0];
+                long long y2 = bombs[j][1];
+                long long r2 = bombs[j][2];
 
-                auto diff = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+                long long diff = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
                 if (diff <= r1 * r1) {
-                    adj[i][j] = 1;
+                    adj[i][j] = true;
                 }
 
                 if (diff <= r2 * r2) {
-                    adj[j][i] = 1;
+                    adj[j][i] = true;
                 }
             }
         }
@@ -49,7 +49,7 @@ public:
                     q.pop_front();
 
                     for (auto j = 0; j < n; ++j) {
-                        if (adj[i][j] == 1 && !visited[j]) {
+                        if (adj[cur][j] && !visited[j]) {
                             visited[j] = true;
                             needCalc[j] = false;
                             mdet[i]++;
