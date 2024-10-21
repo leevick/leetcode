@@ -7,5 +7,6 @@
 #include <queue>
 #include <algorithm>
 #include <map>
+#include <stack>
 
 using namespace std;
