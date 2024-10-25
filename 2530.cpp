@@ -1,4 +1,4 @@
-#include "leecode.hpp"
+#include "leetcode.hpp"
 
 class Solution
 {
